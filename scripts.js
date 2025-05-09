@@ -20,3 +20,30 @@ document.addEventListener('wheel', function(event) {
 
 // 初始化显示第一张图片
 showSlide(currentIndex);
+
+// 添加触摸事件监听器
+let touchStartX = 0;
+let touchEndX = 0;
+const swipeThreshold = 50; // 最小滑动距离
+
+document.addEventListener('touchstart', function(event) {
+    touchStartX = event.changedTouches[0].screenX;
+}, false);
+
+document.addEventListener('touchend', function(event) {
+    touchEndX = event.changedTouches[0].screenX;
+    handleSwipe();
+}, false);
+
+function handleSwipe() {
+    const swipeDistance = touchEndX - touchStartX;
+    if (swipeDistance > swipeThreshold) {
+        // 向右滑动 (上一张)
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        showSlide(currentIndex);
+    } else if (swipeDistance < -swipeThreshold) {
+        // 向左滑动 (下一张)
+        currentIndex = (currentIndex + 1) % totalSlides;
+        showSlide(currentIndex);
+    }
+}
